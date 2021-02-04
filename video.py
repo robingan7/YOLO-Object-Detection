@@ -8,9 +8,10 @@ with open("coco.names", "r") as f:
     classes = [line.strip() for line in f.readlines()]
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
-colors = np.random.uniform(0, 255, size=(len(classes), 3))
+colors = np.random.uniform(100, 255, size=(len(classes), 3))
 
-camera = cv2.VideoCapture("holy.mp4")
+videoPath = 'walking.mp4'
+camera = cv2.VideoCapture(videoPath)
 _,img = camera.read()
 height, width, channels = img.shape
 
@@ -18,7 +19,7 @@ height, width, channels = img.shape
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
 out = cv2.VideoWriter("output_video.avi", fourcc , 25, (width, height))
 
-camera = cv2.VideoCapture("holy.mp4")
+camera = cv2.VideoCapture(videoPath)
 
 while True:
     _,img = camera.read()
