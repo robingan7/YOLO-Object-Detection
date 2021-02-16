@@ -11,7 +11,7 @@ layer_names = net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 colors = np.random.uniform(100, 255, size=(len(classes), 3))
 
-videoPath = 'walking.mp4'
+videoPath = 'draft.mp4'
 camera = cv2.VideoCapture(videoPath)
 fps = camera.get(cv2.CAP_PROP_FPS)
 _,img = camera.read()
@@ -93,19 +93,24 @@ while True:
             else:
                 currentFrame[label].append((x, y))
 
+            thickness = 4
 
             color = colors[class_ids[i]]
-            cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
+            cv2.rectangle(img, (x, y), (x + w, y + h), color, thickness + 2)
             
-            font_scale = 0.7
-            thickness = 2
-            text = "{}: {:.0f}%".format(label,
+            font_scale = 2.5
+
+            showLabel = label
+            if(label == 'person'):
+                showLabel = 'nerd'
+            text = "{}: {:.0f}%".format(showLabel,
 				confidences[i] * 100)
 
             (text_width, text_height) = cv2.getTextSize(text, font, fontScale=font_scale, thickness=thickness)[0]
 
             # set the text start position
             text_offset_x, text_offset_y = x, y
+            text_offset_y = text_offset_y + text_height + thickness
            
             # make the coords of the box with a small padding of two pixels
             txt_box_coords = ((text_offset_x, text_offset_y), (text_offset_x + text_width + 2, text_offset_y - text_height - 8))
